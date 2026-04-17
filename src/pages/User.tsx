@@ -1,23 +1,40 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { Alert, Button, StyleSheet, View, Text, TextInput } from 'react-native'
 
-export default function LoginPage() {
+export default function UserPage() {
 
-    const navigation = useNavigation<NavigationProp<any>>()
-
+    let name = ''
     let username = ''
     let password = ''
+    let passConfirm = ''
 
-    function signIn() {
-        if (username === 'uedson' && password === '123') {
-            navigation.navigate('home')
-        } else {
-            Alert.alert('Login/senha inválido(a)!')
+    function save() {
+        if (!name || name.trim() === '') {
+            Alert.alert('Nome é requerido!')
+            return
         }
+        if (!username || username.trim() === '') {
+            Alert.alert('Login é requerido!')
+            return
+        }
+        if (!password || password.trim() === '') {
+            Alert.alert('Senha é requerida!')
+            return
+        }
+        if (password !== passConfirm) {
+            Alert.alert('Senha não confere!')
+            return
+        }
+
+        // Salvar usuário aqui
     }
 
     return (
         <View style={styles.container}>
+            <View style={styles.inputView}>
+                <Text style={styles.label}>Nome:</Text>
+                <TextInput style={styles.input} onChangeText={value => name = value} />
+            </View>
+
             <View style={styles.inputView}>
                 <Text style={styles.label}>Login:</Text>
                 <TextInput style={styles.input} onChangeText={value => username = value} />
@@ -28,9 +45,15 @@ export default function LoginPage() {
                 <TextInput style={styles.input} onChangeText={value => password = value} secureTextEntry />
             </View>
 
-            <View style={styles.viewButton}>
-                <Button title='Entrar' onPress={signIn} />
+            <View style={styles.inputView}>
+                <Text style={styles.label}>Confirmar Senha:</Text>
+                <TextInput style={styles.input} onChangeText={value => passConfirm = value} secureTextEntry />
             </View>
+
+            <View style={styles.viewButton}>
+                <Button title='Salvar' onPress={save} />
+            </View>
+
         </View>
     )
 }
