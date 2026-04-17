@@ -1,6 +1,11 @@
-import { Alert, Button, StyleSheet, View, Text, TextInput } from 'react-native'
+import { Alert, Button, StyleSheet, View } from 'react-native'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
+
+import MyInput from '../components/MyInput'
 
 export default function UserPage() {
+
+    const navigation = useNavigation<NavigationProp<any>>()
 
     let name = ''
     let username = ''
@@ -26,29 +31,18 @@ export default function UserPage() {
         }
 
         // Salvar usuário aqui
+        navigation.goBack()
     }
 
     return (
         <View style={styles.container}>
-            <View style={styles.inputView}>
-                <Text style={styles.label}>Nome:</Text>
-                <TextInput style={styles.input} onChangeText={value => name = value} />
-            </View>
+            <MyInput label='Name' onChangeText={value => name = value} />
+            
+            <MyInput label='Login' onChangeText={value => username = value} />
 
-            <View style={styles.inputView}>
-                <Text style={styles.label}>Login:</Text>
-                <TextInput style={styles.input} onChangeText={value => username = value} />
-            </View>
+            <MyInput label='Senha' onChangeText={value => password = value} secureTextEntry />
 
-            <View style={styles.inputView}>
-                <Text style={styles.label}>Senha:</Text>
-                <TextInput style={styles.input} onChangeText={value => password = value} secureTextEntry />
-            </View>
-
-            <View style={styles.inputView}>
-                <Text style={styles.label}>Confirmar Senha:</Text>
-                <TextInput style={styles.input} onChangeText={value => passConfirm = value} secureTextEntry />
-            </View>
+            <MyInput label='Confirmar Senha' onChangeText={value => passConfirm = value} secureTextEntry />
 
             <View style={styles.viewButton}>
                 <Button title='Salvar' onPress={save} />
@@ -64,20 +58,6 @@ const styles = StyleSheet.create({
         padding: 20,
         paddingTop: 60,
         alignItems: 'center',
-    },
-    inputView: {
-        width: '90%',
-        marginBottom: 20,
-    },
-    label: {
-        fontSize: 18,
-        width: '100%',
-    },
-    input: {
-        padding: 10,
-        fontSize: 18,
-        borderWidth: 1,
-        borderRadius: 5,
     },
     viewButton: {
         width: '60%',

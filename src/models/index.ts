@@ -2,9 +2,10 @@ export interface User {
 
     name: string
     username: string
-    password?: string
-
+    
     id?: string
+    roles?: string[]
+    password?: string
     token?: string
 
 }

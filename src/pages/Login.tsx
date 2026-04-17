@@ -1,5 +1,7 @@
+import { Alert, Button, StyleSheet, View } from 'react-native'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
-import { Alert, Button, StyleSheet, View, Text, TextInput } from 'react-native'
+
+import MyInput from '../components/MyInput'
 
 export default function LoginPage() {
 
@@ -18,15 +20,8 @@ export default function LoginPage() {
 
     return (
         <View style={styles.container}>
-            <View style={styles.inputView}>
-                <Text style={styles.label}>Login:</Text>
-                <TextInput style={styles.input} onChangeText={value => username = value} />
-            </View>
-
-            <View style={styles.inputView}>
-                <Text style={styles.label}>Senha:</Text>
-                <TextInput style={styles.input} onChangeText={value => password = value} secureTextEntry />
-            </View>
+            <MyInput label='Login' onChangeText={value => username = value} />
+            <MyInput label='Senha' onChangeText={value => password = value} secureTextEntry />
 
             <View style={styles.viewButton}>
                 <Button title='Entrar' onPress={signIn} />
