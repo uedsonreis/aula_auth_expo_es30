@@ -1,6 +1,7 @@
 import { Alert, Button, StyleSheet, View } from 'react-native'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 
+import { login } from '../services/auth.service'
 import MyInput from '../components/MyInput'
 
 export default function LoginPage() {
@@ -11,11 +12,13 @@ export default function LoginPage() {
     let password = ''
 
     function signIn() {
-        if (username === 'uedson' && password === '123') {
-            navigation.navigate('home')
-        } else {
-            Alert.alert('Login/senha inválido(a)!')
-        }
+        login(username, password).then(isSigned => {
+            if (isSigned) {
+                navigation.navigate('home')
+            } else {
+                Alert.alert('Login/senha inválido(a)!')
+            }
+        })
     }
 
     return (
