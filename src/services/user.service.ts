@@ -3,17 +3,20 @@ import { getSigned } from "./auth.service"
 
 const URL = 'http://192.168.0.53:3030/users'
 
-export async function getList() {
-
+async function getHeaders() {
     const signed = await getSigned()
     const token = signed?.token
 
+    return {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    }
+}
+
+export async function getList() {
     const response = await fetch(URL, {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
+        headers: await getHeaders(),
     })
 
     if (response.ok) {
@@ -21,4 +24,23 @@ export async function getList() {
     }
 
     throw new Error('Token expired!')
+}
+
+export async function create(user: User) {
+    const response = await fetch(URL, {
+        method: 'POST',
+        headers: await getHeaders(),
+        body: JSON.stringify(user)
+    })
+
+    if (response.ok) {
+        return true
+    
+    } else if (response.status === 400) {
+        return false
+
+    } else {
+        throw new Error('Token expired!')
+    }
+
 }

@@ -1,11 +1,12 @@
 import { Alert, Button, StyleSheet, View } from 'react-native'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 
+import * as userService from '../services/user.service'
 import MyInput from '../components/MyInput'
 
 export default function UserPage() {
 
-    const navigation = useNavigation<NavigationProp<any>>()
+    const navigation = useNavigation<any>()
 
     let name = ''
     let username = ''
@@ -30,8 +31,15 @@ export default function UserPage() {
             return
         }
 
-        // Salvar usuário aqui
-        navigation.goBack()
+        userService.create({ name, username, password }).then(isSaved => {
+            if (isSaved) {
+                navigation.goBack()
+            } else {
+                Alert.alert('Usuário já cadastrado!')
+            }
+        }).catch(error => {
+            navigation.popToTop()
+        })
     }
 
     return (
