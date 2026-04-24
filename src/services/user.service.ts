@@ -58,3 +58,17 @@ export async function update(user: User) {
         throw new Error('Token expired!')
     }
 }
+
+export async function remove(id: string) {
+    const response = await fetch(`${URL}/${id}`, {
+        method: 'DELETE',
+        headers: await getHeaders()
+    })
+
+    if (response.ok) {
+        return true
+    
+    } else {
+        throw new Error('Token expired!')
+    }
+}

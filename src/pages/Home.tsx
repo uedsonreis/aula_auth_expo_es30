@@ -3,9 +3,9 @@ import { Ionicons } from '@expo/vector-icons'
 import { FlatList, StyleSheet, Text, View } from "react-native"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 
-import { getList } from '../services/user.service'
-import { User } from '../models'
+import * as userService from '../services/user.service'
 import ListItem from '../components/ListItem'
+import { User } from '../models'
 
 export default function HomePage() {
 
@@ -14,7 +14,7 @@ export default function HomePage() {
     const [users, setUsers] = React.useState<User[]>([])
 
     function fetchUsers() {
-        getList()
+        userService.getList()
             .then(list => setUsers(list))
             .catch(error => navigation.goBack())
     }
@@ -34,12 +34,22 @@ export default function HomePage() {
         navigation.navigate('user', user)
     }
 
+    async function removeUser(user: User) {
+        try {
+            await userService.remove(user.id!)
+            fetchUsers()
+            
+        } catch (error) {
+            navigation.goBack()
+        }
+    }
+
     return (
         <View>
             <FlatList
                 data={users}
                 keyExtractor={item => item.username}
-                renderItem={({ item }) => <ListItem user={item} onPress={goToeditUser} />}
+                renderItem={({ item }) => <ListItem user={item} update={goToeditUser} remove={removeUser} />}
             />
 
             <Text style={styles.footer}>Temos {users.length} usuários cadastrados.</Text>
