@@ -1,10 +1,11 @@
 import React from 'react'
-import { Text, View } from "react-native"
 import { Ionicons } from '@expo/vector-icons'
+import { FlatList, StyleSheet, Text, View } from "react-native"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 
 import { getList } from '../services/user.service'
 import { User } from '../models'
+import ListItem from '../components/ListItem'
 
 export default function HomePage() {
 
@@ -29,9 +30,26 @@ export default function HomePage() {
         navigation.addListener('focus', fetchUsers)
     }, [])
 
+    function goToeditUser(user: User) {
+        navigation.navigate('user', user)
+    }
+
     return (
         <View>
-            <Text>Temos {users.length} usuários cadastrados.</Text>
+            <FlatList
+                data={users}
+                keyExtractor={item => item.username }
+                renderItem={({ item }) => <ListItem user={item} onPress={goToeditUser} />}
+            />
+
+            <Text style={styles.footer}>Temos {users.length} usuários cadastrados.</Text>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    footer: {
+        padding: 20,
+        textAlign: 'center',
+    },
+})

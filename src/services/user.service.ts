@@ -42,5 +42,19 @@ export async function create(user: User) {
     } else {
         throw new Error('Token expired!')
     }
+}
 
+export async function update(user: User) {
+    const response = await fetch(`${URL}/${user.id}`, {
+        method: 'PUT',
+        headers: await getHeaders(),
+        body: JSON.stringify(user)
+    })
+
+    if (response.ok) {
+        return true
+    
+    } else {
+        throw new Error('Token expired!')
+    }
 }
