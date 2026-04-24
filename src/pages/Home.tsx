@@ -38,7 +38,7 @@ export default function HomePage() {
         <View>
             <FlatList
                 data={users}
-                keyExtractor={item => item.username }
+                keyExtractor={item => item.username}
                 renderItem={({ item }) => <ListItem user={item} onPress={goToeditUser} />}
             />
 
